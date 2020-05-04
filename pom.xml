@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.onlythinking</groupId>
+    <artifactId>ot-server-parent</artifactId>
+    <version>1.0</version>
+  </parent>
+
+  <artifactId>ot-mybatis-generator</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>ot-mybatis-generator</name>
+  <description>Only thinking mybatis generator</description>
+
+  <properties>
+  </properties>
+
+  <scm>
+    <connection>scm:git:https://github.com/cuteJ/ot-parent.git</connection>
+    <developerConnection>scm:git:https://github.com/cuteJ/ot-parent.git</developerConnection>
+    <url>https://github.com/cuteJ/ot-parent</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>ot-nexus</id>
+      <url>${project.nexus.url}/repository/ot-release/</url>
+    </repository>
+    <snapshotRepository>
+      <id>ot-nexus</id>
+      <url>${project.nexus.url}/repository/ot-snapshot/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>${mybatis.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mybatis.generator</groupId>
+      <artifactId>mybatis-generator-core</artifactId>
+      <version>${mybatis-generator.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>github</id>
+      <name>github nexus</name>
+      <url>https://maven.pkg.github.com/cuteJ/ot-server-parent</url>
+    </repository>
+  </repositories>
+
+</project>
