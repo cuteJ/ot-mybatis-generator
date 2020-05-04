@@ -19,21 +19,18 @@
   </properties>
 
   <scm>
-    <connection>scm:git:https://github.com/cuteJ/ot-parent.git</connection>
-    <developerConnection>scm:git:https://github.com/cuteJ/ot-parent.git</developerConnection>
-    <url>https://github.com/cuteJ/ot-parent</url>
+    <connection>scm:git:https://github.com/cuteJ/ot-mybatis-generator.git</connection>
+    <developerConnection>scm:git:https://github.com/cuteJ/ot-mybatis-generator.git</developerConnection>
+    <url>https://github.com/cuteJ/ot-mybatis-generator</url>
     <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
     <repository>
-      <id>ot-nexus</id>
-      <url>${project.nexus.url}/repository/ot-release/</url>
+      <id>github</id>
+      <name>GitHub OWNER Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/cuteJ/ot-server-parent</url>
     </repository>
-    <snapshotRepository>
-      <id>ot-nexus</id>
-      <url>${project.nexus.url}/repository/ot-snapshot/</url>
-    </snapshotRepository>
   </distributionManagement>
 
   <dependencies>
