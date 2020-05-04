@@ -22,7 +22,7 @@
       <repository>
         <id>github</id>
         <name>github nexus</name>
-        <url>https://maven.pkg.github.com/cuteJ/ot-mybatis-generator</url>
+        <url>https://maven.pkg.github.com/cuteJ/ot-server-parent</url>
       </repository>
     </repositories>
 ````
