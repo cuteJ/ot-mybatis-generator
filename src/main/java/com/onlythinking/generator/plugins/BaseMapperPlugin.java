@@ -22,6 +22,7 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 public class BaseMapperPlugin extends PluginAdapter {
 
     private String baseMapperType;
+    private boolean noDisabled;
 
     private final static FullyQualifiedJavaType MAPPER_ANNO = new FullyQualifiedJavaType("org.apache.ibatis.annotations.Mapper");
 
@@ -40,6 +41,10 @@ public class BaseMapperPlugin extends PluginAdapter {
         if (!stringHasValue(baseMapperType)) {
             System.err.println("[ERROR] BaseMapperPlugin baseMapperType property must be provided");
             return false;
+        }
+
+        if (stringHasValue(properties.getProperty("noDisabled"))) {
+            noDisabled = Boolean.parseBoolean(properties.getProperty("noDisabled"));
         }
 
         FullyQualifiedJavaType baseRecordJavaType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
@@ -76,12 +81,12 @@ public class BaseMapperPlugin extends PluginAdapter {
         return false;
     }
 
-    private List<IntrospectedColumn> getAllColumns(IntrospectedTable introspectedTable){
+    private List<IntrospectedColumn> getAllColumns(IntrospectedTable introspectedTable) {
 
         List<IntrospectedColumn> columns = introspectedTable.getAllColumns();
         List<IntrospectedColumn> allColumns = new ArrayList<>();
-        for(IntrospectedColumn col : columns){
-            if(!"_MYCAT_OP_TIME".equals(col.getActualColumnName().toUpperCase())){
+        for (IntrospectedColumn col : columns) {
+            if (!"_MYCAT_OP_TIME".equals(col.getActualColumnName().toUpperCase())) {
                 allColumns.add(col);
             }
         }
@@ -121,16 +126,19 @@ public class BaseMapperPlugin extends PluginAdapter {
         String delBatchMethodXml = MessageFormat.format(DELETEINBATCH_TEMPLATE, "deleteInBatch", introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime(), id.getActualColumnName(), id.getJavaProperty(), "#{" + id.getJavaProperty() + "}");
         String insertBatchMethodXml = MessageFormat.format(INSERTINBATCH_TEMPLATE, "insertInBatch", introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime(), getTestCol_insertInBatch1(getAllColumns(introspectedTable)), getTestCol_insertInBatch2(getAllColumns(introspectedTable)));
         String countMethodXml = MessageFormat.format(COUNT_TEMPLATE_GETONE, "count", introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime(), trimCols);
-        String disabledByPkMethodXml = MessageFormat.format(DISABLEDBYPK_TEMPLATE, "disabledByPk", introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime(), "disabled = true", id.getJavaProperty(), "#{" + id.getJavaProperty() + "}");
-        String disabledMethodXml = MessageFormat.format(DISABLED_TEMPLATE, "disabledBySelective", introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime(), "disabled = true", trimCols);
 
         document.getRootElement().getElements().add(new TextElement(countMethodXml));
-        document.getRootElement().getElements().add(new TextElement(disabledByPkMethodXml));
-        document.getRootElement().getElements().add(new TextElement(disabledMethodXml));
         document.getRootElement().getElements().add(new TextElement(getMethodXml));
         document.getRootElement().getElements().add(new TextElement(getListMethodXml));
         document.getRootElement().getElements().add(new TextElement(delBatchMethodXml));
         document.getRootElement().getElements().add(new TextElement(insertBatchMethodXml));
+
+        if (!this.noDisabled) {
+            String disabledByPkMethodXml = MessageFormat.format(DISABLEDBYPK_TEMPLATE, "disabledByPk", introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime(), "disabled = true", id.getJavaProperty(), "#{" + id.getJavaProperty() + "}");
+            String disabledMethodXml = MessageFormat.format(DISABLED_TEMPLATE, "disabledBySelective", introspectedTable.getAliasedFullyQualifiedTableNameAtRuntime(), "disabled = true", trimCols);
+            document.getRootElement().getElements().add(new TextElement(disabledByPkMethodXml));
+            document.getRootElement().getElements().add(new TextElement(disabledMethodXml));
+        }
         return true;
     }
 
@@ -326,8 +334,8 @@ public class BaseMapperPlugin extends PluginAdapter {
         "\t\t<set>\n" +
         "\t\t\t{2}\n" +
         "\t\t</set>\n" +
-        "\t\twhere {3} = {4}\n"+
-      "</update>";
+        "\t\twhere {3} = {4}\n" +
+        "</update>";
 
     private final static String DISABLED_TEMPLATE =
       "<update id=\"{0}\" parameterType=\"java.util.Map\" >\n" +
@@ -361,7 +369,7 @@ public class BaseMapperPlugin extends PluginAdapter {
             sb.append("\t\t\t#{").append(col.getJavaProperty()).append(",jdbcType=").append(col.getJdbcTypeName()).append("}");
             if (i != columns.size() - 1) {
                 sb.append(",\n");
-            }else {
+            } else {
                 sb.append("\n\t\t)");
             }
         }
@@ -520,9 +528,10 @@ public class BaseMapperPlugin extends PluginAdapter {
     public boolean clientInsertSelectiveMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         return false;
     }
+
     @Override
     public boolean modelFieldGenerated(Field field, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn, IntrospectedTable introspectedTable, ModelClassType modelClassType) {
-        if("MYCATOPTIME".equals(field.getName().toUpperCase())) return false;
+        if ("MYCATOPTIME".equals(field.getName().toUpperCase())) return false;
         return true;
     }
 }

@@ -29,6 +29,7 @@
     <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
     <plugin type="com.onlythinking.generator.plugins.BaseMapperPlugin">
       <property name="baseMapperType" value="com.onlythinking.generator.BaseMapper"/>
+<!--      <property name="noDisabled" value="true"/>-->
     </plugin>
     <plugin type="com.onlythinking.generator.plugins.RemarksCommentPlugin"/>
     <plugin type="com.onlythinking.generator.plugins.LombokAnnotationPlugin"/>

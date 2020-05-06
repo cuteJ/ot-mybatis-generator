@@ -26,7 +26,7 @@ public class Generator {
 
         String modelPackage = "com.test.model";
         String mapperPackage = "com.test.mapper";
-        String xmlPackage ="/com/test/mapper";
+        String xmlPackage = "/com/test/mapper";
 
         String configXmlLocation = root + "/src/main/resources/generatorConfig.xml";
 
